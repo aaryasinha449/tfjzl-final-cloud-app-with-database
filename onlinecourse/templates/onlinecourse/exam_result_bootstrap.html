@@ -41,8 +41,10 @@
         <div class="card-body">
             <h5>Your Score</h5>
             <h3>{{ total_score }} / {{ total_possible }}</h3>
+
             {% if total_possible > 0 %}
-                <p>Percentage:
+                <p>
+                    Percentage:
                     {% widthratio total_score total_possible 100 %}%
                 </p>
             {% endif %}
@@ -55,28 +57,33 @@
         <div class="card mb-3">
             <div class="card-header">
                 <strong>Question {{ forloop.counter }}:</strong>
-                {{ result.question.content }}
+                {{ result.question.question_text }}
             </div>
+
             <div class="card-body">
                 <p>
                     {% if result.is_correct %}
-                        <span class="text-success font-weight-bold">Correct</span>
+                        <span class="text-success font-weight-bold">
+                            Correct
+                        </span>
                     {% else %}
-                        <span class="text-danger font-weight-bold">Incorrect</span>
+                        <span class="text-danger font-weight-bold">
+                            Incorrect
+                        </span>
                     {% endif %}
                     — Score: {{ result.score }} / {{ result.question.grade }}
                 </p>
 
                 <p><strong>Your selected answer(s):</strong></p>
                 {% for choice in result.selected_choices %}
-                    <p>{{ choice.content }}</p>
+                    <p>{{ choice.choice_text }}</p>
                 {% empty %}
                     <p>No answer selected.</p>
                 {% endfor %}
 
                 <p><strong>Correct answer(s):</strong></p>
                 {% for choice in result.correct_choices %}
-                    <p class="text-success">{{ choice.content }}</p>
+                    <p class="text-success">{{ choice.choice_text }}</p>
                 {% empty %}
                     <p>No correct answer configured.</p>
                 {% endfor %}
@@ -94,3 +101,4 @@
 
 </body>
 </html>
+
