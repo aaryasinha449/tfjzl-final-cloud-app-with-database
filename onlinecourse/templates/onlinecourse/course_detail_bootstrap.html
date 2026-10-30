@@ -33,7 +33,9 @@
             <div class="card-header">
                 Lesson {{ lesson.order|add:1 }}: {{ lesson.title }}
             </div>
-            <div class="card-body">{{ lesson.content }}</div>
+            <div class="card-body">
+                {{ lesson.content }}
+            </div>
         </div>
     {% empty %}
         <p>No lessons available yet.</p>
@@ -44,15 +46,20 @@
 
     {% if user.is_authenticated %}
         {% if course.question_set.all %}
-            <form method="post" action="{% url 'onlinecourse:submit' course.id %}">
+            <form method="post"
+                  action="{% url 'onlinecourse:submit' course.id %}">
                 {% csrf_token %}
+
                 {% for question in course.question_set.all %}
                     <div class="card mb-3">
                         <div class="card-header">
                             <strong>Question {{ forloop.counter }}:</strong>
-                            {{ question.content }}
-                            <span class="text-muted">({{ question.grade }} points)</span>
+                            {{ question.question_text }}
+                            <span class="text-muted">
+                                ({{ question.grade }} points)
+                            </span>
                         </div>
+
                         <div class="card-body">
                             {% for choice in question.choice_set.all %}
                                 <div class="form-check">
@@ -61,15 +68,17 @@
                                            name="choice_{{ question.id }}"
                                            value="{{ choice.id }}"
                                            id="choice_{{ choice.id }}">
+
                                     <label class="form-check-label"
                                            for="choice_{{ choice.id }}">
-                                        {{ choice.content }}
+                                        {{ choice.choice_text }}
                                     </label>
                                 </div>
                             {% endfor %}
                         </div>
                     </div>
                 {% endfor %}
+
                 <button class="btn btn-primary mb-4" type="submit">
                     Submit Exam
                 </button>
@@ -86,3 +95,4 @@
 </div>
 </body>
 </html>
+
