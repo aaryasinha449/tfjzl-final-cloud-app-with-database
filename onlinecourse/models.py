@@ -45,7 +45,6 @@ class Learner(models.Model):
     ]
 
     occupation = models.CharField(
-        null=False,
         max_length=20,
         choices=OCCUPATION_CHOICES,
         default=STUDENT,
@@ -53,13 +52,12 @@ class Learner(models.Model):
     social_link = models.URLField(max_length=200)
 
     def __str__(self):
-        return self.user.username + "," + self.occupation
+        return f"{self.user.username},{self.occupation}"
 
 
 # Course model
 class Course(models.Model):
     name = models.CharField(
-        null=False,
         max_length=30,
         default='online course',
     )
@@ -75,7 +73,7 @@ class Course(models.Model):
     is_enrolled = False
 
     def __str__(self):
-        return "Name: " + self.name + "," + "Description: " + self.description
+        return f"Name: {self.name},Description: {self.description}"
 
 
 # Lesson model
@@ -118,8 +116,8 @@ class Enrollment(models.Model):
 # Question model
 class Question(models.Model):
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
-    question_text = models.CharField(max_length=200, default="Question text")
-    grade = models.IntegerField(default=0)
+    question_text = models.TextField()
+    grade = models.IntegerField(default=1)
 
     def __str__(self):
         return self.question_text
@@ -135,7 +133,7 @@ class Question(models.Model):
 # Choice model
 class Choice(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
-    choice_text = models.CharField(max_length=200, default="Choice text")
+    choice_text = models.CharField(max_length=100)
     is_correct = models.BooleanField(default=False)
 
     def __str__(self):
@@ -151,5 +149,6 @@ class Submission(models.Model):
     choices = models.ManyToManyField(Choice)
 
     def __str__(self):
-        return f"Submission {self.id} - {self.enrollment}"
+        return str(self.enrollment.id)
+
 
